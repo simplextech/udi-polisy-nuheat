@@ -1,0 +1,22 @@
+{
+  "name": "NuHeat",
+  "docs": "https://github.com/simplextech/udi-polisy-nuheat",
+  "type": "node",
+  "executable": "nodeserver.js",
+  "install": "install.sh",
+  "description": "NuHeat Signature Thermostat Integration",
+  "notice": "",
+  "shortPoll": "90",
+  "longPoll": "900",
+  "profile_version": "0.1.0",
+  "credits": [
+    {
+      "title": "NuHeat Signature Thermostat Integration",
+      "author": "Simplex Technology",
+      "version": "0.1.0",
+      "date": "November 13th, 2020",
+      "source": "https://github.com/simplextech/udi-polisy-nuheat",
+      "license": "MIT"
+    }
+  ]
+}
