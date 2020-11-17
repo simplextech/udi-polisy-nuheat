@@ -1,6 +1,8 @@
 'use strict';
-var helpers = require('../lib/helpers.js');
-const https = require('https');
+// var helpers = require('../lib/helpers.js');
+// const https = require('https');
+const storage = require('node-persist');
+storage.init({dir: './storage'});
 
 // The controller node is a regular ISY node. It must be the first node created
 // by the node server. It has an ST status showing the nodeserver status, and
@@ -11,26 +13,19 @@ const https = require('https');
 // nodeDefId must match the nodedef id in your nodedef
 const nodeDefId = 'CONTROLLER';
 
-module.exports = function(Polyglot) {
-  // Utility function provided to facilitate logging.
-  const logger = Polyglot.logger;
-  // const _config = this.polyInterface.getConfig();
-  // const config = Object(_config.customParams);
 
-  // In this example, we also need to have our custom node because we create
-  // nodes from this controller. See onCreateNew
+
+module.exports = function(Polyglot) {
+  const logger = Polyglot.logger;
+
   const MyNode = require('./MyNode.js')(Polyglot);
 
   class Controller extends Polyglot.Node {
-    // polyInterface: handle to the interface
-    // address: Your node address, withouth the leading 'n999_'
-    // primary: Same as address, if the node is a primary node
-    // name: Your node name
     constructor(polyInterface, primary, address, name) {
       super(nodeDefId, polyInterface, primary, address, name);
 
-      // Commands that this controller node can handle.
-      // Should match the 'accepts' section of the nodedef.
+      this.nuheat = require('../lib/nuheat.js')(Polyglot, polyInterface);
+
       this.commands = {
         CREATE_NEW: this.onCreateNew,
         DISCOVER: this.onDiscover,
@@ -39,8 +34,6 @@ module.exports = function(Polyglot) {
         QUERY: this.query,
       };
 
-      // Status that this controller node has.
-      // Should match the 'sts' section of the nodedef.
       this.drivers = {
         ST: { value: '1', uom: 2 }, // uom 2 = Boolean. '1' is True.
       };
@@ -79,47 +72,45 @@ module.exports = function(Polyglot) {
     }
 
     // Here you could discover devices from a 3rd party API
-    onDiscover() {
+    async onDiscover() {
       logger.info('Discovering');
 
-      let username = this.polyInterface.getCustomParam('Username');
-      let password = this.polyInterface.getCustomParam('Password');
-      logger.info('Username: ' + username);
-      logger.info('Password: ' + password);
+      let sessionId = await storage.getItem('sessionId');
+      // logger.info('Session File: ' + JSON.stringify(sessionId));
 
-      const data = JSON.stringify({
-        Email: username,
-        Password: password,
-        Confirm: password,
-      })
+      if (!sessionId) {
+        let auth = await this.nuheat.authenticate();
+        logger.info('Controller Auth: ' + JSON.stringify(auth));
+      }
+      
+      logger.info('Getting Thermostats');
+      let tstats = await this.nuheat.thermostats();
+      logger.info('Thermostat Data: ' + JSON.stringify(tstats));
 
-      const options = {
-        hostname: 'www.mynuheat.com',
-        port: 443,
-        path: '/api/authenticate/user',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Content-Length': data.length
+      let groups = tstats.Groups;
+      for (const group of groups) {
+        logger.info('Group Name: ' + group.groupName);
+        for (const stat of group.Thermostats) {
+          logger.info('Room: ' + stat.Room);
+          logger.info('Serial Number: ' + stat.SerialNumber);
+
+          const name = stat.Room;
+          const address = stat.SerialNumber.toString();
+
+          try {
+            const result = await this.polyInterface.addNode(
+              new MyNode(this.polyInterface, address, address, name)
+            );
+    
+            logger.info('Add node worked: %s', result);
+          } catch (err) {
+            logger.errorStack(err, 'Add node failed:');
+          }
+
         }
       }
 
-      const req = https.request(options, res => {
-        logger.info(`statusCode: ${res.statusCode}`)
-
-        res.on('data', d => {
-          let _data = JSON.parse(d);
-          logger.info(_data);
-          logger.info('SessionId: ' + _data.SessionId);
-        })
-      })
-
-      req.on('error', error => {
-        logger.error(error);
-      })
       
-      req.write(data);
-      req.end();
 
     }
 
