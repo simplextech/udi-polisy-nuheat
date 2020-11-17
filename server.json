@@ -1,5 +1,5 @@
 {
-  "name": "NuHeat",
+  "name": "SimplexNuHeat",
   "docs": "https://github.com/simplextech/udi-polisy-nuheat",
   "type": "node",
   "executable": "nodeserver.js",
