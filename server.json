@@ -6,8 +6,8 @@
   "install": "install.sh",
   "description": "NuHeat Signature Thermostat Integration",
   "notice": "",
-  "shortPoll": "90",
-  "longPoll": "900",
+  "shortPoll": "180",
+  "longPoll": "14400",
   "profile_version": "0.1.0",
   "credits": [
     {

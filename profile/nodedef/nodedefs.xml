@@ -1,7 +1,6 @@
 <!-- Version 0.0.1 -->
 <nodeDefs>
 
-  <!-- Node server node - KEEP THIS. This will create a nodeserver node showing if the node server is active or not -->
   <nodedef id="CONTROLLER" nls="CONTROLLER">
     <sts>
       <st id="ST" editor="CONTROLLER"/>
@@ -10,7 +9,6 @@
       <sends/>
       <accepts>
         <cmd id="DISCOVER"/>
-        <cmd id="CREATE_NEW"/>
         <cmd id="UPDATE_PROFILE"/>
         <cmd id="REMOVE_NOTICES"/>
         <cmd id="QUERY"/>
@@ -18,24 +16,42 @@
     </cmds>
   </nodedef>
 
-  <!-- Virtual node - dimmer -->
-  <nodedef id="VNODE_DIMMER" nls="VN">
-    <sts>
-      <st id="ST" editor="PERCENT"/>
-    </sts>
-    <cmds>
-      <sends>
-        <cmd id="DON"/>
-        <cmd id="DOF"/>
-      </sends>
-      <accepts>
-        <cmd id="DON">
-          <p id="" editor="PERCENT" optional="T"/>
-        </cmd>
-        <cmd id="DOF"/>
-        <cmd id="QUERY"/>
-      </accepts>
-    </cmds>
-  </nodedef>
+  <nodeDef id="THERMOSTAT_F" nls="TSTAT">
+      <editors />
+      <sts>
+          <st id="ST" editor="_17_0" />
+          <st id="CLISPH" editor="_17_0" />
+          <st id="CLIMD" editor="CLIMD" />
+          <st id="CLIHCS" editor="CLIHCS" />
+      </sts>
+      <cmds>
+          <sends />
+          <accepts>
+              <cmd id="QUERY" />
+              <cmd id="CLISPH">
+                  <p id="" editor="_17_0" init="CLISPH" />
+              </cmd>
+          </accepts>
+      </cmds>
+  </nodeDef>
+
+ <nodeDef id="THERMOSTAT_C" nls="TSTAT">
+        <editors />
+        <sts>
+            <st id="ST" editor="_4_0" />
+            <st id="CLISPH" editor="_4_0" />
+            <st id="CLIMD" editor="CLIMD" />
+            <st id="CLIHCS" editor="CLIHCS" />
+        </sts>
+        <cmds>
+            <sends />
+            <accepts>
+                <cmd id="QUERY" />
+                <cmd id="CLISPH">
+                    <p id="" editor="_4_0" init="CLISPH" />
+                </cmd>
+            </accepts>
+        </cmds>
+  </nodeDef>
 
 </nodeDefs>

@@ -1,19 +1,20 @@
 {
-  "name": "poly-template-nodejs",
-  "description": "Polyglot NodeServer template for node.js",
-  "version": "1.1.2",
-  "author": "Benoit Mercier",
+  "name": "udi-polisy-nuheat",
+  "description": "Polyglot NodeServer for NuHeat Signature Thermostat",
+  "version": "0.1.0",
+  "author": "Simplex Technology",
   "license": "MIT",
   "main": "nodeserver.js",
   "scripts": {
     "linter": "eslint --ignore-path .gitignore ."
   },
-  "repository": "UniversalDevicesInc/poly-template-nodejs",
+  "repository": "simplextech/udi-polisy-nuheat",
   "dependencies": {
     "async-lock": "^1.1.4",
     "markdown": "^0.5.0",
     "polyinterface": "^1.2.0",
     "pgc_interface": "^1.0.11",
+    "node-persist": "^3.1.0",
     "axios": "^0.21.0"
   },
   "devDependencies": {
