@@ -1,5 +1,17 @@
 ## Configuring this node server
 
-Enter your instructions in configdoc.md
+Enter the appropriate username (e-mail) and password combination used when you login to the
+http://www.mynuheat.com website.
 
-This is shown in the UI if using Polyglot V2. PGC Does not support this yet.
+### Temperature Scales
+ - Fahrenheit
+ - Metric
+
+### Polling Parameters
+ - All polling is seconds
+ 
+ - ShortPoll
+   - Time period between query of Thermostat temperature and settings
+   - Default: 3 minutes (180 Seconds)
+ - LongPoll
+   - Nothing

@@ -24,18 +24,21 @@ const lock = new AsyncLock({ timeout: 500 });
 // Those are the node definitions that our nodeserver uses.
 // You will need to edit those files.
 const ControllerNode = require('./Nodes/ControllerNode.js')(Polyglot);
-const MyNode = require('./Nodes/MyNode.js')(Polyglot);
+const ThermostatNode_F = require('./Nodes/ThermostatNode_F.js')(Polyglot);
+const ThermostatNode_C = require('./Nodes/ThermostatNode_C.js')(Polyglot);
 
 // Names of our customParams
 const emailParam = 'Username';
 const pwParam = 'Password';
+const tempScale = 'Scale';
 // const hostParam = 'Host';
 // const portParam = 'Port';
 
 // UI customParams default values. Param must have at least 1 character
 const defaultParams = {
-  [emailParam]: ' ',
-  [pwParam]: ' ',
+  [emailParam]: 'john@doe.net',
+  [pwParam]: 'password',
+  [tempScale]: 'Fahrenheit'
   // [hostParam]: ' ',
   // [portParam]: ' ',
 };
@@ -69,7 +72,7 @@ logger.info('Starting Node Server');
 
 // Create an instance of the Polyglot interface. We need pass all the node
 // classes that we will be using.
-const poly = new Polyglot.Interface([ControllerNode, MyNode]);
+const poly = new Polyglot.Interface([ControllerNode, ThermostatNode_F, ThermostatNode_C]);
 
 // Connected to MQTT, but config has not yet arrived.
 poly.on('mqttConnected', function() {
