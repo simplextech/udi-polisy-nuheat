@@ -1,6 +1,4 @@
 'use strict';
-// var helpers = require('../lib/helpers.js');
-// const https = require('https');
 const storage = require('node-persist');
 storage.init({dir: './storage'});
 
@@ -19,7 +17,6 @@ module.exports = function(Polyglot) {
       this.nuheat = require('../lib/nuheat.js')(Polyglot, polyInterface);
 
       this.commands = {
-        // CREATE_NEW: this.onCreateNew,
         DISCOVER: this.onDiscover,
         UPDATE_PROFILE: this.onUpdateProfile,
         REMOVE_NOTICES: this.onRemoveNotices,
@@ -27,48 +24,15 @@ module.exports = function(Polyglot) {
       };
 
       this.drivers = {
-        ST: { value: '1', uom: 2 }, // uom 2 = Boolean. '1' is True.
+        ST: { value: '1', uom: 2 },
       };
 
       this.isController = true;
       this.sessionId = null;
     }
 
-    // Creates a new node using ThermostatNode class, using a sequence number.
-    // It needs to be an async function because we use the
-    // this.polyInterface.addNode async function
-    // async onCreateNew() {
-    //   const prefix = 'node';
-    //   const nodes = this.polyInterface.getNodes();
-
-    //   // Finds the first available address and creates a node.
-    //   for (let seq = 0; seq < 999; seq++) {
-    //     // address will be <prefix><seq>
-    //     const address = prefix + seq.toString().padStart(3, '0');
-
-    //     if (!nodes[address]) {
-    //       // ISY Address will be n<profileNum>_<prefix><seq>
-    //       // name will be <prefix><seq>
-    //       try {
-    //         const result = await this.polyInterface.addNode(
-    //           new ThermostatNode(this.polyInterface, this.address, address, address)
-    //         );
-
-    //         logger.info('Add node worked: %s', result);
-    //       } catch (err) {
-    //         logger.errorStack(err, 'Add node failed:');
-    //       }
-    //       break;
-    //     }
-    //   }
-    // }
-
-    // Here you could discover devices from a 3rd party API
     async onDiscover() {
-      logger.info('Discovering');
-
       let sessionId = await storage.getItem('sessionId');
-      // logger.info('Session File: ' + JSON.stringify(sessionId));
 
       if (!sessionId) {
         let auth = await this.nuheat.authenticate();
@@ -83,9 +47,6 @@ module.exports = function(Polyglot) {
       for (const group of groups) {
         logger.info('Group Name: ' + group.groupName);
         for (const stat of group.Thermostats) {
-          logger.info('Room: ' + stat.Room);
-          logger.info('Serial Number: ' + stat.SerialNumber);
-
           const name = stat.Room;
           const address = stat.SerialNumber.toString();
           const scale = this.polyInterface.getCustomParam('Scale');
@@ -95,7 +56,6 @@ module.exports = function(Polyglot) {
               const result = await this.polyInterface.addNode(
                 new ThermostatNode_F(this.polyInterface, address, address, name)
               );
-      
               logger.info('Add node worked: %s', result);
             } catch (err) {
               logger.errorStack(err, 'Add node failed:');
@@ -105,7 +65,6 @@ module.exports = function(Polyglot) {
               const result = await this.polyInterface.addNode(
                 new ThermostatNode_C(this.polyInterface, address, address, name)
               );
-      
               logger.info('Add node worked: %s', result);
             } catch (err) {
               logger.errorStack(err, 'Add node failed:');
@@ -115,19 +74,16 @@ module.exports = function(Polyglot) {
       }
     }
 
-    // Sends the profile files to ISY
     onUpdateProfile() {
       this.polyInterface.updateProfile();
     }
 
-    // Removes notices from the Polyglot UI
     onRemoveNotices() {
       this.polyInterface.removeNoticesAll();
     }
 
   };
 
-  // Required so that the interface can find this Node class using the nodeDefId
   Controller.nodeDefId = nodeDefId;
 
   return Controller;
