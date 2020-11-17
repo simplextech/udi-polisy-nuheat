@@ -217,6 +217,19 @@ async function doPoll(longPoll) {
   try {
     await lock.acquire('poll', function() {
       logger.info('%s', longPoll ? 'Long poll' : 'Short poll');
+      const nodes = poly.getNodes();
+      // logger.info(JSON.stringify(nodes));
+
+      if (longPoll) {
+        logger.info('Long Poll: Initiate token refresh');
+      } else {
+        logger.info('Short Poll: Update nodes');
+        Object.keys(nodes).forEach(function(address){
+          if ('query' in nodes[address]) {
+            nodes[address].query();
+          }
+        })
+      }
     });
   } catch (err) {
     logger.error('Error while polling: %s', err.message);

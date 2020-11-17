@@ -31,7 +31,7 @@ module.exports = function(Polyglot) {
       this.drivers = {
         ST: {value: '0', uom: 4},
         CLISPH: {value: '0', uom: 4},
-        CLIMD: {value: '0', uom: 67},
+        CLIMD: {value: '0', uom: 25},
         CLIHCS: {value: '0', uom: 66},
       };
     }

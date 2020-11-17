@@ -124,6 +124,7 @@ module.exports = function(Polyglot) {
     onRemoveNotices() {
       this.polyInterface.removeNoticesAll();
     }
+
   };
 
   // Required so that the interface can find this Node class using the nodeDefId

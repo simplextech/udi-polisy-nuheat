@@ -1,5 +1,8 @@
 'use strict';
 
+const storage = require('node-persist');
+storage.init({dir: './storage'});
+
 // This is an example NodeServer Node definition.
 // You need one per nodedefs.
 
@@ -20,6 +23,8 @@ module.exports = function(Polyglot) {
     constructor(polyInterface, primary, address, name) {
       super(nodeDefId, polyInterface, primary, address, name);
 
+      this.nuheat = require('../lib/nuheat.js')(Polyglot, polyInterface);
+
       this.commands = {
         QUERY: this.query,
         CLISPH: this.setPointHeat,
@@ -28,13 +33,54 @@ module.exports = function(Polyglot) {
       this.drivers = {
         ST: {value: '0', uom: 17},
         CLISPH: {value: '0', uom: 17},
-        CLIMD: {value: '0', uom: 67},
+        CLIMD: {value: '0', uom: 25},
         CLIHCS: {value: '0', uom: 66},
       };
     }
 
+    async query() {
+      // logger.info('Node Name: ' + this.name);
+      // logger.info('Node Address:' + this.address);
+      let sessionId = await storage.getItem('sessionId');
+      // logger.info('SessionId:' + sessionId);
+
+      let statInfo = await this.nuheat.thermostat(this.address);
+      if (statInfo == null) {
+        logger.error('Not Authenticated... Re-Authenticating...');
+        this.nuheat.authenticate();
+      } else {
+        // logger.info(JSON.stringify(statInfo));
+        logger.info(statInfo.Temperature);
+        logger.info(statInfo.SetPointTemp);
+        logger.info(statInfo.OperatingMode);
+        logger.info(statInfo.Heating);
+
+        let temp = this.nuheat.CtoF(statInfo.Temperature);
+        let setPoint = this.nuheat.CtoF(statInfo.SetPointTemp);
+        let isHeating = 0;
+
+        if (statInfo.Heating) {
+          isHeating = 1;
+        } else {
+          isHeating = 0
+        }
+
+        logger.info('Temperature: ' + temp);
+        logger.info('SetPoint: ' + setPoint);
+        this.setDriver('ST', temp, true);
+        this.setDriver('CLISPH', setPoint, true);
+        this.setDriver('CLIMD', statInfo.OperatingMode, true);
+        this.setDriver('CLIHCS', 1, true);
+
+      }
+    }
+
     setPointHeat(message) {
       logger.info('setPointHeat: ' + message.value);
+      let setPoint = this.nuheat.FtoJC(message.value);
+
+      this.nuheat.setPointHeat(this.address, setPoint);
+      this.setDriver('CLISPH', message.value, true);
     }
     
     // onDON(message) {
