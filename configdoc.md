@@ -1,6 +1,6 @@
 ## Configuring this node server
 
-Enter the appropriate username (e-mail) and password combination used when you login to the
+Enter the appropriate username (e-mail) and password used for the
 http://www.mynuheat.com website.
 
 ### Temperature Scales
