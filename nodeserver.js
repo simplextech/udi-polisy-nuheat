@@ -112,7 +112,7 @@ poly.on('messageSent', function(message) {
 async function doPoll(longPoll) {
   try {
     await lock.acquire('poll', function() {
-      logger.info('%s', longPoll ? 'Long poll' : 'Short poll');
+      // logger.info('%s', longPoll ? 'Long poll' : 'Short poll');
       const nodes = poly.getNodes();
 
       if (longPoll) {
