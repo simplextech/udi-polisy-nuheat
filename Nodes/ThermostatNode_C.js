@@ -22,6 +22,8 @@ module.exports = function(Polyglot) {
         CLIMD: {value: '0', uom: 25},
         CLIHCS: {value: '0', uom: 66},
       };
+
+      this.query();
     }
 
     async query() {
