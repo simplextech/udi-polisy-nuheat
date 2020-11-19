@@ -32,15 +32,16 @@ module.exports = function(Polyglot) {
     }
 
     async onDiscover() {
-      let sessionId = await storage.getItem('sessionId');
-
-      if (!sessionId) {
-        let auth = await this.nuheat.authenticate();
-        logger.info('Controller Auth: ' + JSON.stringify(auth));
-      }
+      let auth = await this.nuheat.authenticate();
+      let tstats = null;
       
       logger.info('Getting Thermostats');
-      let tstats = await this.nuheat.thermostats();
+      tstats = await this.nuheat.thermostats();
+      if (tstats == null) {
+        logger.error('Not Authenticated... Sending Auth Request.');
+        auth = await this.nuheat.authenticate();
+        tstats = await this.nuheat.thermostats();
+      }
       logger.info('Thermostat Data: ' + JSON.stringify(tstats));
 
       let groups = tstats.Groups;
