@@ -134,7 +134,7 @@ async function doPoll(longPoll) {
 async function autoCreateController() {
   try {
     await poly.addNode(
-      new ControllerNode(poly, 'controller', 'controller', 'Simplex-NuHeat')
+      new ControllerNode(poly, 'controller', 'controller', 'NuHeat')
     );
   } catch (err) {
     logger.error('Error creating controller node');
