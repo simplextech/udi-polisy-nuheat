@@ -1,6 +1,6 @@
 {
   "name": "ST-NuHeat",
-  "docs": "https://github.com/simplextech/udi-poly-nuheat",
+  "docs": "https://github.com/simplextech/udi-poly-st-nuheat",
   "type": "node",
   "executable": "st-nuheat.js",
   "install": "install.sh",
@@ -17,7 +17,7 @@
       "author": "Simplex Technology",
       "version": "0.1.1",
       "date": "November 13th, 2020",
-      "source": "https://github.com/simplextech/udi-poly-nuheat",
+      "source": "https://github.com/simplextech/udi-poly-st-nuheat",
       "license": "MIT"
     }
   ]
