@@ -1,14 +1,14 @@
 {
-  "name": "udi-polisy-nuheat",
+  "name": "udi-poly-nuheat",
   "description": "Polyglot NodeServer for NuHeat Signature Thermostat",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Simplex Technology",
   "license": "MIT",
   "main": "nodeserver.js",
   "scripts": {
     "linter": "eslint --ignore-path .gitignore ."
   },
-  "repository": "simplextech/udi-polisy-nuheat",
+  "repository": "simplextech/udi-poly-nuheat",
   "dependencies": {
     "async-lock": "^1.1.4",
     "markdown": "^0.5.0",
