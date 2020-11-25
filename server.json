@@ -10,7 +10,7 @@
   "shortPoll": "180",
   "longPoll": "14400",
   "profile_version": "0.1.0",
-  "testMode": true,
+  "testMode": false,
   "credits": [
     {
       "title": "NuHeat Signature Thermostat Integration",
