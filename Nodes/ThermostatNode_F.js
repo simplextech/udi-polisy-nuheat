@@ -30,7 +30,7 @@ module.exports = function(Polyglot) {
     async query() {
       let statInfo = await this.nuheat.thermostat(this.address);
 
-      if (statInfo == null) {
+      if (statInfo === null || statInfo === undefined) {
         logger.error('Not Authenticated... Re-Authenticating...');
         this.nuheat.authenticate();
       } else {

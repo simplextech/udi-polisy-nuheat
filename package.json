@@ -11,11 +11,11 @@
   "repository": "simplextech/udi-poly-st-nuheat",
   "dependencies": {
     "async-lock": "^1.1.4",
+    "axios": "^0.21.0",
     "markdown": "^0.5.0",
-    "polyinterface": "^1.2.0",
-    "pgc_interface": "^1.0.11",
     "node-persist": "^3.1.0",
-    "axios": "^0.21.0"
+    "pgc_interface": "^1.0.11",
+    "polyinterface": "^1.2.0"
   },
   "devDependencies": {
     "eslint": "^5.12.0",
