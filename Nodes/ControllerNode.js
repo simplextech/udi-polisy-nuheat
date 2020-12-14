@@ -45,6 +45,7 @@ module.exports = function(Polyglot) {
       logger.info('Thermostat Data: ' + JSON.stringify(tstats));
 
       let groups = tstats.Groups;
+      if (groups) {
       for (const group of groups) {
         logger.info('Group Name: ' + group.groupName);
         for (const stat of group.Thermostats) {
@@ -73,6 +74,7 @@ module.exports = function(Polyglot) {
           }
         }
       }
+    }
     }
 
     onUpdateProfile() {
