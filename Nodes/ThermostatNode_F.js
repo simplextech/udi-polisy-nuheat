@@ -1,7 +1,5 @@
 'use strict';
 
-const { stringify } = require('node-persist');
-
 const nodeDefId = 'THERMOSTAT_F';
 
 module.exports = function(Polyglot) {
@@ -31,7 +29,6 @@ module.exports = function(Polyglot) {
       };
 
       this.query();
-      
     }
 
     async query() {
@@ -41,7 +38,6 @@ module.exports = function(Polyglot) {
         logger.error('Not Authenticated... Re-Authenticating...');
         this.nuheat.authenticate();
       } else {
-        // logger.info(JSON.stringify(statInfo));
         let temp = this.nuheat.CtoF(statInfo.Temperature);
         let setPoint = this.nuheat.CtoF(statInfo.SetPointTemp);
         let isHeating = 0;
