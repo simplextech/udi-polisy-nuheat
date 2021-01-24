@@ -16,6 +16,8 @@ module.exports = function(Polyglot) {
         CLISPH: this.setPointHeat,
         SCHEDMODE: this.scheduleMode,
         HOLDUNTIL: this.holdUntil,
+        AWAY: this.setAway,
+        PRESENT: this.setPresent,
       };
 
       this.drivers = {
@@ -25,9 +27,12 @@ module.exports = function(Polyglot) {
         CLIHCS: {value: '0', uom: 66},
         GV0: {value: '0', uom: 19},
         GV1: {value: '0', uom: 44},
-        GV2: {value: '1', uom: 20}
+        GV2: {value: '1', uom: 20},
+        GV3: {value: '0', uom: 2}
       };
 
+      this.groupName = '';
+      this.groupID = -1;
       this.query();
     }
 
@@ -41,6 +46,9 @@ module.exports = function(Polyglot) {
         let temp = this.nuheat.CtoF(statInfo.Temperature);
         let setPoint = this.nuheat.CtoF(statInfo.SetPointTemp);
         let isHeating = 0;
+        this.groupName = statInfo.GroupName;
+        this.groupID = statInfo.GroupId;
+        let groupAwayMode = 0;
 
         if (statInfo.Heating) {
           isHeating = 1;
@@ -48,10 +56,17 @@ module.exports = function(Polyglot) {
           isHeating = 0
         }
 
+        if (statInfo.GroupAwayMode) {
+          groupAwayMode = 1;
+        } else {
+          groupAwayMode = 0;
+        }
+
         this.setDriver('ST', temp, true);
         this.setDriver('CLISPH', setPoint, true);
         this.setDriver('CLIMD', statInfo.OperatingMode, true);
         this.setDriver('CLIHCS', isHeating, true);
+        this.setDriver('GV3', groupAwayMode, true);
       }
     }
 
@@ -99,6 +114,20 @@ module.exports = function(Polyglot) {
 
     holdUntil(message) {
       this.setDriver('GV2', message.value, true);
+    }
+
+    setAway() {
+      if (this.groupID != -1) {
+        let ret = this.nuheat.setAway(this.groupID, this.groupName);
+        this.setDriver('GV3', 1, true);
+      }
+    }
+
+    setPresent() {
+      if (this.groupID != -1) {
+        let ret = this.nuheat.setPresent(this.groupID, this.groupName);
+        this.setDriver('GV3', 0, true);
+      }
     }
     
   };

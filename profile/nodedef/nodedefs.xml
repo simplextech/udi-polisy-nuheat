@@ -26,7 +26,7 @@
           <st id="GV0" editor="I_HOUR" />
           <st id="GV1" editor="I_MINUTE" />
           <st id="GV2" editor="I_HOUR" hidden="T" />
-
+          <st id="GV3" editor="_2_0" />
       </sts>
       <cmds>
           <sends />
@@ -41,6 +41,8 @@
               <cmd id="HOLDUNTIL">
                 <p id="" editor="I_HOURS" init="1" />
               </cmd>
+              <cmd id="AWAY" />
+              <cmd id="PRESENT" />
           </accepts>
       </cmds>
   </nodeDef>
@@ -55,6 +57,7 @@
             <st id="GV0" editor="I_HOUR" />
             <st id="GV1" editor="I_MINUTE" />
             <st id="GV2" editor="I_HOUR" hidden="T" />
+            <st id="GV3" editor="_2_0" />
         </sts>
         <cmds>
             <sends />
@@ -69,6 +72,8 @@
                 <cmd id="HOLDUNTIL">
                   <p id="" editor="I_HOURS" init="1" />
               </cmd>
+              <cmd id="AWAY" />
+              <cmd id="PRESENT" />
             </accepts>
         </cmds>
   </nodeDef>
