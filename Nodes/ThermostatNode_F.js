@@ -14,6 +14,8 @@ module.exports = function(Polyglot) {
       this.commands = {
         QUERY: this.query,
         CLISPH: this.setPointHeat,
+        SCHEDMODE: this.scheduleMode,
+        HOLDUNTIL: this.holdUntil,
       };
 
       this.drivers = {
@@ -21,10 +23,12 @@ module.exports = function(Polyglot) {
         CLISPH: {value: '0', uom: 17},
         CLIMD: {value: '0', uom: 25},
         CLIHCS: {value: '0', uom: 66},
+        GV0: {value: '0', uom: 19},
+        GV1: {value: '0', uom: 44},
+        GV2: {value: '1', uom: 20}
       };
 
       this.query();
-      
     }
 
     async query() {
@@ -53,9 +57,48 @@ module.exports = function(Polyglot) {
 
     setPointHeat(message) {
       let setPoint = this.nuheat.FtoJC(message.value);
+      let holdMinutes = parseInt(this.drivers['GV2'].value, 10) * 60;
+      let holdUntil = this.nuheat.AddMinutes(new Date(), holdMinutes).toISOString();
+      let dt = new Date(holdUntil);
+      let holdHour = dt.getHours();
+      // let holdMinute = dt.getMinutes();
+      let holdMinute = '0';
+      logger.info('Hold Until ISO: ' + holdUntil);
+      logger.info('Hold Until Time: ' + holdHour + ':' + holdMinute);
 
-      this.nuheat.setPointHeat(this.address, setPoint);
-      this.setDriver('CLISPH', message.value, true);
+      let curMode = parseInt(this.drivers['CLIMD'].value, 10);
+      switch(curMode) {
+        case 1:
+          this.setDriver('CLIMD', 2, true);
+          this.setDriver('GV0', holdHour, true);
+          this.setDriver('GV1', holdMinute, true);
+          this.setDriver('CLISPH', message.value, true);
+          this.nuheat.setPointHeat(this.address, setPoint, 2, holdUntil);
+          break;
+        case 2:
+          this.setDriver('GV0', holdHour, true);
+          this.setDriver('GV1', holdMinute, true);
+          this.setDriver('CLISPH', message.value, true);
+          this.nuheat.setPointHeat(this.address, setPoint, 2, holdUntil);
+          break;
+        case 3:
+          this.setDriver('GV0', 0, true);
+          this.setDriver('GV1', 0, true);
+          this.setDriver('CLISPH', message.value, true);
+          this.nuheat.setPointHeat(this.address, setPoint, 3, holdUntil);
+          break;
+      }
+    }
+
+    scheduleMode(message) {
+      let ret = this.nuheat.setScheduleMode(this.address, message.value)
+      this.setDriver('CLIMD', message.value, true);
+      this.setDriver('GV0', 0, true);
+      this.setDriver('GV1', 0, true);
+    }
+
+    holdUntil(message) {
+      this.setDriver('GV2', message.value, true);
     }
     
   };

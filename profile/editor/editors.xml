@@ -14,4 +14,20 @@
     <range uom="25" subset="0-3" nls="MODE" />
   </editor>
 
+  <editor id="I_SCHED">
+    <range uom="25" subset="1,3" nls="MODE" />
+  </editor>
+
+  <editor id="I_HOUR">
+		<range uom="19" min="0" max="23" />
+	</editor>
+
+  <editor id="I_HOURS">
+		<range uom="20" min="1" max="23" />
+	</editor>
+
+  <editor id="I_MINUTE">
+		<range uom="44" min="0" max="59" />
+	</editor>
+
 </editors>
