@@ -20,11 +20,14 @@ ST-TSTAT-CLIMD-NAME = Thermostat Mode
 ST-TSTAT-GV0-NAME = Hold Until Hour
 ST-TSTAT-GV1-NAME = Hold Until Minute
 ST-TSTAT-GV2-NAME = Hold Hour Increment
+ST-TSTAT-GV3-NAME = Group Away
 CMD-TSTAT-QUERY-NAME = Query
 CMD-TSTAT-CLISPH-NAME = Heat SetPoint
 CMD-TSTAT-SCHEDMODE-NAME = Schedule Mode
 CMD-TSTAT-HOLDUNTIL-NAME = Hold Until Increment
 CMD-TSTAT-CLIMD-NAME = Mode
+CMD-TSTAT-AWAY-NAME = Away
+CMD-TSTAT-PRESENT-NAME = Present
 
 MODE-0 = Unknown
 MODE-1 = Auto
