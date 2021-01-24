@@ -21,15 +21,25 @@
       <sts>
           <st id="ST" editor="_17_0" />
           <st id="CLISPH" editor="_17_0" />
-          <st id="CLIMD" editor="CLIMD" />
           <st id="CLIHCS" editor="CLIHCS" />
+          <st id="CLIMD" editor="CLIMD" />
+          <st id="GV0" editor="I_HOUR" />
+          <st id="GV1" editor="I_MINUTE" />
+          <st id="GV2" editor="I_HOUR" hidden="T" />
+
       </sts>
       <cmds>
           <sends />
           <accepts>
               <cmd id="QUERY" />
               <cmd id="CLISPH">
-                  <p id="" editor="_17_0" init="CLISPH" />
+                <p id="" editor="_17_0" init="ST" />
+              </cmd>
+              <cmd id="SCHEDMODE">
+                <p id="" editor="I_SCHED" init="CLIMD" />
+              </cmd>
+              <cmd id="HOLDUNTIL">
+                <p id="" editor="I_HOURS" init="1" />
               </cmd>
           </accepts>
       </cmds>
@@ -40,8 +50,11 @@
         <sts>
             <st id="ST" editor="_4_0" />
             <st id="CLISPH" editor="_4_0" />
-            <st id="CLIMD" editor="CLIMD" />
             <st id="CLIHCS" editor="CLIHCS" />
+            <st id="CLIMD" editor="CLIMD" />
+            <st id="GV0" editor="I_HOUR" />
+            <st id="GV1" editor="I_MINUTE" />
+            <st id="GV2" editor="I_HOUR" hidden="T" />
         </sts>
         <cmds>
             <sends />
@@ -50,6 +63,12 @@
                 <cmd id="CLISPH">
                     <p id="" editor="_4_0" init="CLISPH" />
                 </cmd>
+                <cmd id="SCHEDMODE">
+                  <p id="" editor="I_SCHED" init="CLIMD" />
+                </cmd>
+                <cmd id="HOLDUNTIL">
+                  <p id="" editor="I_HOURS" init="1" />
+              </cmd>
             </accepts>
         </cmds>
   </nodeDef>
