@@ -15,3 +15,6 @@ http://www.mynuheat.com website.
    - Default: 3 minutes (180 Seconds)
  - LongPoll
    - Nothing
+
+### Post Install
+ - From the Admin Console go to the ST-NuHeat Controller node and push the 'Disover Thermostats' button.
