@@ -76,8 +76,8 @@ module.exports = function(Polyglot) {
       let holdUntil = this.nuheat.AddMinutes(new Date(), holdMinutes).toISOString();
       let dt = new Date(holdUntil);
       let holdHour = dt.getHours();
-      // let holdMinute = dt.getMinutes();
-      let holdMinute = '0';
+      let holdMinute = dt.getMinutes();
+      // let holdMinute = '00';
       logger.info('Hold Until ISO: ' + holdUntil);
       logger.info('Hold Until Time: ' + holdHour + ':' + holdMinute);
 
