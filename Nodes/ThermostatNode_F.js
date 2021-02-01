@@ -64,7 +64,7 @@ module.exports = function(Polyglot) {
 
         this.setDriver('ST', temp, true);
         this.setDriver('CLISPH', setPoint, true);
-        this.setDriver('CLIMD', statInfo.OperatingMode, true);
+        this.setDriver('CLIMD', statInfo.ScheduleMode, true);
         this.setDriver('CLIHCS', isHeating, true);
         this.setDriver('GV3', groupAwayMode, true);
       }
