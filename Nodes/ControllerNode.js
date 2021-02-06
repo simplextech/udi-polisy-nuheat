@@ -72,6 +72,7 @@ module.exports = function(Polyglot) {
               logger.errorStack(err, 'Add node failed:');
             }
           }
+          await this.nuheat.sleep(1000);
         }
       }
     }
