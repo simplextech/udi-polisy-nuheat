@@ -6,9 +6,11 @@ const fs = require('fs');
 const markdown = require('markdown').markdown;
 const AsyncLock = require('async-lock');
 
-const Polyglot = useCloud() ?
-  require('pgc_interface') : 
-  require('polyinterface');
+// const Polyglot = useCloud() ?
+//   require('pgc_interface') :
+//   require('polyinterface-v3');
+
+const Polyglot = require('polyinterface-v3');
 
 const logger = Polyglot.logger;
 const lock = new AsyncLock({ timeout: 500 });
@@ -26,6 +28,13 @@ const defaultParams = {
   [pwParam]: 'password',
   [tempScale]: 'Fahrenheit'
 };
+
+const typedParams = [
+  {name: 'email', title: 'E-Mail', isRequired: true},
+  {name: 'password', title: 'Password', isRequired: true},
+  {name: 'tempScale', title: 'Temp Scale', defaultValue: 'Fahrenheit', isRequired: true}
+];
+
 
 logger.info('Starting Node Server');
 
