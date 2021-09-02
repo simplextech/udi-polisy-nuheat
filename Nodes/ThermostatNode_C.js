@@ -41,7 +41,11 @@ module.exports = function(Polyglot) {
 
       if (statInfo === null || statInfo === undefined) {
         logger.error('Not Authenticated... Re-Authenticating...');
-        this.nuheat.authenticate();
+        try {
+          await this.nuheat.authenticate();
+        } catch (error) {
+          logger.error('Authentication Error', error);
+        }
       } else {
         let temp = this.nuheat.JCtoC(statInfo.Temperature);
         let setPoint = this.nuheat.JCtoC(statInfo.SetPointTemp);
@@ -129,7 +133,7 @@ module.exports = function(Polyglot) {
         this.setDriver('GV3', 0, true);
       }
     }
-    
+
   };
 
   ThermostatNode_C.nodeDefId = nodeDefId;
