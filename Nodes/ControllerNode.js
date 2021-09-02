@@ -33,8 +33,8 @@ module.exports = function(Polyglot) {
 
     async onDiscover() {
       let auth = await this.nuheat.authenticate();
-      let tstats = null;
-      
+      let tstats;
+
       logger.info('Getting Thermostats');
       tstats = await this.nuheat.thermostats();
       if (tstats == null) {
@@ -53,7 +53,7 @@ module.exports = function(Polyglot) {
           const address = stat.SerialNumber.toString();
           const scale = this.polyInterface.getCustomParam('Scale');
 
-          if (scale == 'Fahrenheit') {
+          if (scale === 'Fahrenheit') {
             try {
               const result = await this.polyInterface.addNode(
                 new ThermostatNode_F(this.polyInterface, address, address, name)
