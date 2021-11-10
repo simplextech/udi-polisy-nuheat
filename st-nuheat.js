@@ -5,9 +5,10 @@ trapUncaughExceptions();
 const fs = require('fs');
 const markdown = require('markdown').markdown;
 const AsyncLock = require('async-lock');
+const axios = require('axios');
 
 const Polyglot = useCloud() ?
-  require('pgc_interface') : 
+  require('pgc_interface') :
   require('polyinterface');
 
 const logger = Polyglot.logger;
@@ -111,19 +112,24 @@ poly.on('messageSent', function(message) {
 
 async function doPoll(longPoll) {
   try {
-    await lock.acquire('poll', function() {
+    await lock.acquire('poll', async function () {
       // logger.info('%s', longPoll ? 'Long poll' : 'Short poll');
       const nodes = poly.getNodes();
 
       if (longPoll) {
-        logger.info('Long Poll: Nothing yet...');
+        logger.info('Long Poll');
       } else {
         logger.info('Short Poll: Update nodes');
-        Object.keys(nodes).forEach(function(address){
-          if ('query' in nodes[address]) {
-            nodes[address].query();
-          }
-        })
+        let data = await axios.get('http://www.google.com')
+        if (data.status == 200) {
+          Object.keys(nodes).forEach(function (address) {
+            if ('query' in nodes[address]) {
+              nodes[address].query();
+            }
+          });
+        } else {
+          logger.error('DNS is not resolving');
+        }
       }
     });
   } catch (err) {
