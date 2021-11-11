@@ -37,7 +37,12 @@ module.exports = function(Polyglot) {
     }
 
     async query() {
-      let statInfo = await this.nuheat.thermostat(this.address);
+      let statInfo = {};
+      try {
+        statInfo = await this.nuheat.thermostat(this.address);
+      } catch(error) {
+        logger.error('query(): Failed getting statInfo', error);
+      }
 
       if (statInfo === null || statInfo === undefined) {
         logger.error('Not Authenticated... Re-Authenticating...');
@@ -92,25 +97,40 @@ module.exports = function(Polyglot) {
           this.setDriver('GV0', holdHour, true);
           this.setDriver('GV1', holdMinute, true);
           this.setDriver('CLISPH', message.value, true);
-          this.nuheat.setPointHeat(this.address, setPoint, 2, holdUntil);
+          try {
+            this.nuheat.setPointHeat(this.address, setPoint, 2, holdUntil);
+          } catch(error) {
+            logger.error('setPointHeat: ', error);
+          }
           break;
         case 2:
           this.setDriver('GV0', holdHour, true);
           this.setDriver('GV1', holdMinute, true);
           this.setDriver('CLISPH', message.value, true);
-          this.nuheat.setPointHeat(this.address, setPoint, 2, holdUntil);
+          try {
+            this.nuheat.setPointHeat(this.address, setPoint, 2, holdUntil);
+          } catch(error) {
+            logger.error('setPointHeat: ', error);
+          }
+
           break;
         case 3:
           this.setDriver('GV0', 0, true);
           this.setDriver('GV1', 0, true);
           this.setDriver('CLISPH', message.value, true);
-          this.nuheat.setPointHeat(this.address, setPoint, 3, holdUntil);
+          try {
+            this.nuheat.setPointHeat(this.address, setPoint, 3, holdUntil);
+          } catch(error) {
+            logger.error('setPointHeat: ', error);
+          }
+
           break;
       }
     }
 
     scheduleMode(message) {
-      let ret = this.nuheat.setScheduleMode(this.address, message.value)
+      // let ret = this.nuheat.setScheduleMode(this.address, message.value)
+      this.nuheat.setScheduleMode(this.address, message.value)
       this.setDriver('CLIMD', message.value, true);
       this.setDriver('GV0', 0, true);
       this.setDriver('GV1', 0, true);
@@ -121,14 +141,14 @@ module.exports = function(Polyglot) {
     }
 
     setAway() {
-      if (this.groupID != -1) {
+      if (this.groupID !== -1) {
         let ret = this.nuheat.setAway(this.groupID, this.groupName);
         this.setDriver('GV3', 1, true);
       }
     }
 
     setPresent() {
-      if (this.groupID != -1) {
+      if (this.groupID !== -1) {
         let ret = this.nuheat.setPresent(this.groupID, this.groupName);
         this.setDriver('GV3', 0, true);
       }
