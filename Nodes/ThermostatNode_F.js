@@ -112,7 +112,6 @@ module.exports = function(Polyglot) {
           } catch(error) {
             logger.error('setPointHeat: ', error);
           }
-
           break;
         case 3:
           this.setDriver('GV0', 0, true);
@@ -123,7 +122,6 @@ module.exports = function(Polyglot) {
           } catch(error) {
             logger.error('setPointHeat: ', error);
           }
-
           break;
       }
     }
