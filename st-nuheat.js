@@ -14,6 +14,7 @@ const Polyglot = useCloud() ?
 const logger = Polyglot.logger;
 const lock = new AsyncLock({ timeout: 500 });
 
+const nuheat = require('./lib/nuheat.js')(Polyglot);
 const ControllerNode = require('./Nodes/ControllerNode.js')(Polyglot);
 const ThermostatNode_F = require('./Nodes/ThermostatNode_F.js')(Polyglot);
 const ThermostatNode_C = require('./Nodes/ThermostatNode_C.js')(Polyglot);
@@ -120,17 +121,26 @@ async function doPoll(longPoll) {
         logger.info('Long Poll');
       } else {
         logger.info('Short Poll: Update nodes');
-        let data = await axios.get('http://www.google.com')
-        if (data.status == 200) {
+        if (nuheat.inetCheck()) {
           Object.keys(nodes).forEach(function (address) {
             if ('query' in nodes[address]) {
               nodes[address].query();
             }
           });
         } else {
-          logger.error('DNS is not resolving');
           this.polyInterface.restart();
         }
+        // let data = await axios.get('http://www.google.com')
+        // if (data.status == 200) {
+        //   Object.keys(nodes).forEach(function (address) {
+        //     if ('query' in nodes[address]) {
+        //       nodes[address].query();
+        //     }
+        //   });
+        // } else {
+        //   logger.error('DNS is not resolving');
+        //   this.polyInterface.restart();
+        // }
       }
     });
   } catch (err) {
