@@ -129,6 +129,7 @@ async function doPoll(longPoll) {
           });
         } else {
           logger.error('DNS is not resolving');
+          this.polyInterface.restart();
         }
       }
     });
