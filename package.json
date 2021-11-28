@@ -1,7 +1,7 @@
 {
   "name": "udi-poly-st-nuheat",
   "description": "Polyglot NodeServer for NuHeat Signature Thermostat",
-  "version": "0.1.15",
+  "version": "0.1.17",
   "author": "Simplex Technology",
   "license": "MIT",
   "main": "nodeserver.js",
