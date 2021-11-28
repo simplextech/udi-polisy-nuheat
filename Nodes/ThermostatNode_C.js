@@ -37,40 +37,50 @@ module.exports = function(Polyglot) {
     }
 
     async query() {
-      let statInfo = await this.nuheat.thermostat(this.address);
-
-      if (statInfo === null || statInfo === undefined) {
-        logger.error('Not Authenticated... Re-Authenticating...');
+      let statInfo = {}
+      if (this.nuheat.inetCheck()) {
         try {
-          await this.nuheat.authenticate();
-        } catch (error) {
-          logger.error('Authentication Error', error);
+          statInfo = await this.nuheat.thermostat(this.address);
+        } catch(error) {
+          logger.error('query(): Failed getting statInfo', error);
+        }
+
+        if (statInfo === null || statInfo === undefined) {
+          logger.error('Not Authenticated... Re-Authenticating...');
+          try {
+            await this.nuheat.authenticate();
+          } catch (error) {
+            logger.error('Authentication Error', error);
+          }
+        } else {
+          let temp = this.nuheat.JCtoC(statInfo.Temperature);
+          let setPoint = this.nuheat.JCtoC(statInfo.SetPointTemp);
+          let isHeating = 0;
+          this.groupName = statInfo.GroupName;
+          this.groupID = statInfo.GroupId;
+          let groupAwayMode = 0;
+
+          if (statInfo.Heating) {
+            isHeating = 1;
+          } else {
+            isHeating = 0
+          }
+
+          if (statInfo.GroupAwayMode) {
+            groupAwayMode = 1;
+          } else {
+            groupAwayMode = 0;
+          }
+
+          this.setDriver('ST', temp, true);
+          this.setDriver('CLISPH', setPoint, true);
+          this.setDriver('CLIMD', statInfo.ScheduleMode, true);
+          this.setDriver('CLIHCS', isHeating, true);
+          this.setDriver('GV3', groupAwayMode, true);
         }
       } else {
-        let temp = this.nuheat.JCtoC(statInfo.Temperature);
-        let setPoint = this.nuheat.JCtoC(statInfo.SetPointTemp);
-        let isHeating = 0;
-        this.groupName = statInfo.GroupName;
-        this.groupID = statInfo.GroupId;
-        let groupAwayMode = 0;
-
-        if (statInfo.Heating) {
-          isHeating = 1;
-        } else {
-          isHeating = 0
-        }
-
-        if (statInfo.GroupAwayMode) {
-          groupAwayMode = 1;
-        } else {
-          groupAwayMode = 0;
-        }
-
-        this.setDriver('ST', temp, true);
-        this.setDriver('CLISPH', setPoint, true);
-        this.setDriver('CLIMD', statInfo.ScheduleMode, true);
-        this.setDriver('CLIHCS', isHeating, true);
-        this.setDriver('GV3', groupAwayMode, true);
+        logger.error('Query Failed: No Internet');
+        this.polyInterface.restart();
       }
     }
 
