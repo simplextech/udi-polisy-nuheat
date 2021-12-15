@@ -9,7 +9,7 @@ const axios = require('axios');
 
 const Polyglot = useCloud() ?
   require('pgc_interface') :
-  require('polyinterface');
+  require('polyinterface-v3');
 
 const logger = Polyglot.logger;
 const lock = new AsyncLock({ timeout: 500 });
