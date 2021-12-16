@@ -53,6 +53,10 @@ module.exports = function(Polyglot) {
       //       );
       // }
       logger.info('Thermostat Data: ' + JSON.stringify(tstats));
+      if (tstats == undefined) {
+        logger.error('No thermostats found.');
+	return;
+      }
 
       let groups = tstats.Groups;
       if (groups) {
