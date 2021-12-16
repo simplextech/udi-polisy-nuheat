@@ -11,6 +11,12 @@
   "longPoll": "14400",
   "profile_version": "0.1.4",
   "testMode": false,
+  "logLevel": "DEBUG",
+  "customParams": {
+	  "Username": "",
+	  "Password": "",
+	  "Scale": "Fahrenheit"
+  },
   "credits": [
     {
       "title": "NuHeat Signature Thermostat Integration",
