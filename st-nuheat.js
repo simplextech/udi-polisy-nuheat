@@ -53,8 +53,6 @@ poly.on('config', function(config) {
       poly.setCustomParamsDoc(markdown.toHTML(md.toString()));
     }
 
-    initializeCustomParams(config.customParams);
-
     if (!nodesCount) {
       try {
         logger.info('Auto-creating controller');
@@ -71,6 +69,10 @@ poly.on('config', function(config) {
   }
 });
 
+poly.on('customParams', function(params) {
+  initializeCustomParams(config.customParams);
+});
+  
 poly.on('oauth', function(oAuth) {
   logger.info('Received OAuth code');
 });
