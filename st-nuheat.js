@@ -7,9 +7,7 @@ const markdown = require('markdown').markdown;
 const AsyncLock = require('async-lock');
 const axios = require('axios');
 
-const Polyglot = useCloud() ?
-  require('pgc_interface') :
-  require('polyinterface');
+const Polyglot = require('polyinterface-v3');
 
 const logger = Polyglot.logger;
 const lock = new AsyncLock({ timeout: 500 });
@@ -43,18 +41,9 @@ poly.on('config', function(config) {
 
   if (config.isInitialConfig) {
     poly.removeNoticesAll();
-
-    if (poly.isCloud) {
-      logger.info('Running nodeserver in the cloud');
-      poly.updateProfileIfNew();
-    } else {
-      logger.info('Running nodeserver on-premises');
-      const md = fs.readFileSync('./configdoc.md');
-      poly.setCustomParamsDoc(markdown.toHTML(md.toString()));
-    }
-
-    initializeCustomParams(config.customParams);
-
+    // const md = fs.readFileSync('./configdoc.md');
+    // poly.setCustomParamsDoc(markdown.toHTML(md.toString()));
+    
     if (!nodesCount) {
       try {
         logger.info('Auto-creating controller');
@@ -62,33 +51,26 @@ poly.on('config', function(config) {
       } catch (err) {
         logger.error('Error while auto-creating controller node:', err);
       }
-    } else {
-    }
-
-    if (config.newParamsDetected) {
-      logger.info('New parameters detected');
+    
+      // if (config.newParamsDetected) {
+      //   logger.info('New parameters detected');
+      // }
     }
   }
 });
 
-poly.on('oauth', function(oAuth) {
-  logger.info('Received OAuth code');
-});
+poly.on('customParams', function(params) { 
+  initializeCustomParams(config.customParams); 
+}); 
 
 poly.on('poll', function(longPoll) {
   callAsync(doPoll(longPoll));
 });
 
-poly.on('oauth', function(oaMessage) {
-  logger.info('Received oAuth message %o', oaMessage);
-});
-
 poly.on('stop', async function() {
   logger.info('Graceful stop');
-
   await doPoll(false);
   await doPoll(true);
-
   poly.stop();
 });
 
@@ -130,17 +112,6 @@ async function doPoll(longPoll) {
         } else {
           this.polyInterface.restart();
         }
-        // let data = await axios.get('http://www.google.com')
-        // if (data.status == 200) {
-        //   Object.keys(nodes).forEach(function (address) {
-        //     if ('query' in nodes[address]) {
-        //       nodes[address].query();
-        //     }
-        //   });
-        // } else {
-        //   logger.error('DNS is not resolving');
-        //   this.polyInterface.restart();
-        // }
       }
     });
   } catch (err) {
@@ -167,8 +138,8 @@ function initializeCustomParams(currentParams) {
 
   // Get orphan keys from either currentParams or defaultParams
   const differentKeys = defaultParamKeys.concat(currentParamKeys)
-  .filter(function(key) {
-    return !(key in defaultParams) || !(key in currentParams);
+    .filter(function(key) {
+      return !(key in defaultParams) || !(key in currentParams);
   });
 
   if (differentKeys.length) {
