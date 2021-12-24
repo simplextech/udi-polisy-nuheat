@@ -41,8 +41,8 @@ poly.on('config', function(config) {
 
   if (config.isInitialConfig) {
     poly.removeNoticesAll();
-    // const md = fs.readFileSync('./configdoc.md');
-    // poly.setCustomParamsDoc(markdown.toHTML(md.toString()));
+    const md = fs.readFileSync('./configdoc.md');
+    poly.setCustomParamsDoc(markdown.toHTML(md.toString()));
     
     if (!nodesCount) {
       try {
