@@ -59,8 +59,8 @@ poly.on('config', function(config) {
   }
 });
 
-poly.on('customParams', function(params) { 
-  initializeCustomParams(config.customParams); 
+poly.on('customParams', function(params) {
+  initializeCustomParams(params)
 }); 
 
 poly.on('poll', function(longPoll) {
