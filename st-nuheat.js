@@ -69,8 +69,8 @@ poly.on('poll', function(longPoll) {
 
 poly.on('stop', async function() {
   logger.info('Graceful stop');
-  await doPoll(false);
-  await doPoll(true);
+  // await doPoll(false);
+  // await doPoll(true);
   poly.stop();
 });
 
