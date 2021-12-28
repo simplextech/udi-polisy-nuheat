@@ -166,9 +166,9 @@ function trapUncaughExceptions() {
   });
 }
 
-function useCloud() {
-  return process.env.MQTTENDPOINT && process.env.STAGE;
-}
+// function useCloud() {
+//   return process.env.MQTTENDPOINT && process.env.STAGE;
+// }
 
 // Starts the NodeServer!
 poly.start();
