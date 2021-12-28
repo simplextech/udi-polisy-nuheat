@@ -17,15 +17,15 @@ const ControllerNode = require('./Nodes/ControllerNode.js')(Polyglot);
 const ThermostatNode_F = require('./Nodes/ThermostatNode_F.js')(Polyglot);
 const ThermostatNode_C = require('./Nodes/ThermostatNode_C.js')(Polyglot);
 
-const emailParam = 'Username';
-const pwParam = 'Password';
-const tempScale = 'Scale';
+// const emailParam = 'Username';
+// const pwParam = 'Password';
+// const tempScale = 'Scale';
 
-const defaultParams = {
-  [emailParam]: 'john@doe.net',
-  [pwParam]: 'password',
-  [tempScale]: 'Fahrenheit'
-};
+// const defaultParams = {
+//   [emailParam]: 'john@doe.net',
+//   [pwParam]: 'password',
+//   [tempScale]: 'Fahrenheit'
+// };
 
 logger.info('Starting Node Server');
 
