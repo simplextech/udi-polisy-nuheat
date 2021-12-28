@@ -51,10 +51,6 @@ poly.on('config', function(config) {
       } catch (err) {
         logger.error('Error while auto-creating controller node:', err);
       }
-    
-      // if (config.newParamsDetected) {
-      //   logger.info('New parameters detected');
-      // }
     }
   }
 });
@@ -69,8 +65,6 @@ poly.on('poll', function(longPoll) {
 
 poly.on('stop', async function() {
   logger.info('Graceful stop');
-  // await doPoll(false);
-  // await doPoll(true);
   poly.stop();
 });
 

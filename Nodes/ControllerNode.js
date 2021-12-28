@@ -32,7 +32,6 @@ module.exports = function(Polyglot) {
     }
 
     async onDiscover() {
-      // let auth;
       let tstats = {};
 
       logger.info('Getting Thermostats');
@@ -43,15 +42,6 @@ module.exports = function(Polyglot) {
         logger.error('onDiscover(): Authenticate failed');
       }
 
-      // logger.info('Getting Thermostats');
-      // tstats = await this.nuheat.thermostats();
-      // if (tstats == null) {
-      //   logger.error('Not Authenticated... Sending Auth Request.');
-      //   await this.nuheat.authenticate()
-      //       .then(
-      //         tstats = await this.nuheat.thermostats()
-      //       );
-      // }
       logger.info('Thermostat Data: ' + JSON.stringify(tstats));
 
       let groups = tstats.Groups;
@@ -81,7 +71,6 @@ module.exports = function(Polyglot) {
               logger.errorStack(err, 'Add node failed:');
             }
           }
-          // await this.nuheat.sleep(100);
         }
       }
     }
