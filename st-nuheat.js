@@ -17,15 +17,11 @@ const ControllerNode = require('./Nodes/ControllerNode.js')(Polyglot);
 const ThermostatNode_F = require('./Nodes/ThermostatNode_F.js')(Polyglot);
 const ThermostatNode_C = require('./Nodes/ThermostatNode_C.js')(Polyglot);
 
-// const emailParam = 'Username';
-// const pwParam = 'Password';
-// const tempScale = 'Scale';
-
-// const defaultParams = {
-//   [emailParam]: 'john@doe.net',
-//   [pwParam]: 'password',
-//   [tempScale]: 'Fahrenheit'
-// };
+const defaultParams = {
+  Username: '',
+  Password: '',
+  Scale: 'Fahrenheit'
+};
 
 logger.info('Starting Node Server');
 
@@ -165,10 +161,6 @@ function trapUncaughExceptions() {
     logger.error(`uncaughtException REPORT THIS!: ${err.stack}`);
   });
 }
-
-// function useCloud() {
-//   return process.env.MQTTENDPOINT && process.env.STAGE;
-// }
 
 // Starts the NodeServer!
 poly.start();
