@@ -32,43 +32,47 @@ module.exports = function(Polyglot) {
     }
 
     async onDiscover() {
-      let tstats = {};
+      let tstats = null;
 
-      logger.info('Getting Thermostats');
+      logger.info('onDiscover()');
       try {
-        await this.nuheat.authenticate()
-            .then(tstats = await this.nuheat.thermostats());
+        let auth = await this.nuheat.authenticate()
+        if (auth) {
+          tstats = await this.nuheat.thermostats();
+        } else {
+          logger.error('onDiscover() - Auth Error');
+        }
       } catch(error) {
         logger.error('onDiscover(): Authenticate failed');
       }
 
-      logger.info('Thermostat Data: ' + JSON.stringify(tstats));
-
-      let groups = tstats.Groups;
-      for (const group of groups) {
-        logger.info('Group Name: ' + group.groupName);
-        for (const stat of group.Thermostats) {
-          const name = stat.Room;
-          const address = stat.SerialNumber.toString();
-          const scale = this.polyInterface.getCustomParam('Scale');
-
-          if (scale === 'Fahrenheit') {
-            try {
-              const result = await this.polyInterface.addNode(
-                new ThermostatNode_F(this.polyInterface, address, address, name)
-              );
-              logger.info('Add node worked: %s', result);
-            } catch (err) {
-              logger.errorStack(err, 'Add node failed:');
-            }
-          } else {
-            try {
-              const result = await this.polyInterface.addNode(
-                new ThermostatNode_C(this.polyInterface, address, address, name)
-              );
-              logger.info('Add node worked: %s', result);
-            } catch (err) {
-              logger.errorStack(err, 'Add node failed:');
+      if (tstats != null) {
+        let groups = tstats.Groups;
+        for (const group of groups) {
+          logger.info('Group Name: ' + group.groupName);
+          for (const stat of group.Thermostats) {
+            const name = stat.Room;
+            const address = stat.SerialNumber.toString();
+            const scale = this.polyInterface.getCustomParam('Scale');
+  
+            if (scale === 'Fahrenheit') {
+              try {
+                const result = await this.polyInterface.addNode(
+                  new ThermostatNode_F(this.polyInterface, address, address, name)
+                );
+                logger.info('Add node worked: %s', result);
+              } catch (err) {
+                logger.errorStack(err, 'Add node failed:');
+              }
+            } else {
+              try {
+                const result = await this.polyInterface.addNode(
+                  new ThermostatNode_C(this.polyInterface, address, address, name)
+                );
+                logger.info('Add node worked: %s', result);
+              } catch (err) {
+                logger.errorStack(err, 'Add node failed:');
+              }
             }
           }
         }
